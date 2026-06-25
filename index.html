@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="GeoTrust: a calibrated, training-free epistemic uncertainty signal for frozen feed-forward geometry models (VGGT, pi3, MASt3R) that flags hallucinated geometry.">
+  <meta name="keywords" content="feed-forward geometry, epistemic uncertainty, calibration, VGGT, pi3, MASt3R">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeoTrust: Calibrated Epistemic Uncertainty for Feed-Forward Geometry</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+  <style>
+    .qual-card {
+      display: block; width: 100%; margin: 0 auto 0.9rem; border-radius: 6px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.18); cursor: zoom-in;
+      transition: box-shadow 0.15s ease;
+    }
+    .qual-card:hover { box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3); }
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0, 0, 0, 0.88); cursor: zoom-out;
+      align-items: center; justify-content: center;
+    }
+    .lightbox.is-active { display: flex; }
+    .lightbox img { max-width: 96%; max-height: 96%; border-radius: 4px; }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="#abstract">Abstract</a>
+      <a class="navbar-item" href="#method">Method</a>
+      <a class="navbar-item" href="#qualitative">Qualitative</a>
+      <a class="navbar-item" href="#results">Results</a>
+      <a class="navbar-item" href="#BibTeX">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">GeoTrust: Calibrated Epistemic Uncertainty for Feed-Forward Geometry</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Anonymous WACV 2026 Submission</span>
+          </div>
+          <div class="is-size-6 publication-authors">
+            <span class="author-block">Paper under double-blind review. Author and affiliation information removed for anonymity.</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv (coming soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code (coming soon)</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/teaser.png" alt="GeoTrust teaser">
+      <h2 class="subtitle has-text-centered">
+        From a frozen feed-forward backbone we read a per-pixel disagreement signal
+        <i>D</i>, the spread of the predicted surface across resampled input-view subsets.
+        <i>D</i> mirrors the true per-pixel error and flags geometry the model never observed;
+        the native confidence <i>A</i> does not.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Feed-forward geometry models such as VGGT and pi3 reconstruct dense scene geometry
+            from images in a single pass and are being deployed on robots, where they fail
+            silently: they confidently predict geometry they never observed. Every uncertainty
+            signal shipped with these models, and in the methods built on them, is aleatoric
+            heteroscedastic self-report, and none is calibrated: no expected calibration error
+            (ECE), no reliability diagrams. We study the missing epistemic signal.
+          </p>
+          <p>
+            From a frozen backbone we read a per-pixel disagreement signal <i>D</i>, the spread
+            of the predicted surface across resampled input-view subsets, and ground it with
+            exact covisibility-support <i>S</i> from depth and pose. With three frozen backbones
+            and no learned head, <i>D</i> predicts per-pixel error and beats or matches the
+            native aleatoric confidence at failure detection across all three (AUROC up to 0.85
+            versus 0.63). We report the first ECE numbers for feed-forward geometry uncertainty:
+            the native confidence is badly miscalibrated under domain shift (ECE up to 0.42
+            synthetic-to-real), while a simple post-hoc calibration of <i>D</i> reaches ECE
+            about 0.02 on all three backbones. As an application, <i>D</i> flags the free-space
+            hallucinations a robot would plan into (collision-risk AUROC 0.91 versus 0.73), and
+            its most-uncertain 10% of the map holds about a third of the total error (three
+            times random), so test-time refinement spent where <i>D</i> is high recovers most of
+            the achievable error reduction at a fraction of the cost. Evaluation is strictly
+            cross-dataset on ETH3D, 7-Scenes, and TUM RGB-D.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="method">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full">
+        <h2 class="title is-3 has-text-centered">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            We never fine-tune the backbone. One forward pass gives the native confidence
+            <i>A</i> (the aleatoric baseline). From <i>N</i> resampled input-view subsets we
+            read the disagreement <i>D</i>, a single-model epistemic estimate native to a
+            multi-view model. We ground <i>D</i> physically with covisibility-support <i>S</i>,
+            how many input views actually observe each surface, computed exactly from depth and
+            pose. A post-hoc calibration step (isotonic, no learned head) turns <i>D</i> into a
+            calibrated trust map that drives failure detection, collision-risk flagging, and
+            trust-filtered map fusion.
+          </p>
+        </div>
+        <img src="./static/images/method.png" alt="GeoTrust method diagram"
+             style="display:block; margin:auto; max-width:90%;">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small" id="qualitative">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered">Qualitative results</h2>
+      <p class="has-text-centered" style="margin-bottom:1.5rem;">
+        Across ETH3D, 7-Scenes, and TUM RGB-D: the true per-pixel error, the disagreement
+        <i>D</i> (ours), and the native confidence shown as uncertainty. <i>D</i> tracks the
+        true error; the native confidence does not. Each card states its own worst-10%
+        failure-detection AUROC, so the comparison is visible per image. Across all 111 scored
+        references, <i>D</i> beats the native confidence on 74% of them (mean AUROC 0.79 vs
+        0.65, mean Spearman with error 0.43 vs 0.16).
+      </p>
+      <h3 class="title is-5 has-text-centered" style="margin-bottom:0.75rem;">ETH3D</h3>
+      <img class="qual-card" src="./static/images/qual/qual_eth3d_00.png" alt="ETH3D example">
+      <img class="qual-card" src="./static/images/qual/qual_eth3d_01.png" alt="ETH3D example">
+      <img class="qual-card" src="./static/images/qual/qual_eth3d_02.png" alt="ETH3D example">
+      <img class="qual-card" src="./static/images/qual/qual_eth3d_03.png" alt="ETH3D example">
+      <img class="qual-card" src="./static/images/qual/qual_eth3d_04.png" alt="ETH3D example">
+
+      <h3 class="title is-5 has-text-centered" style="margin:1.5rem 0 0.75rem;">7-Scenes</h3>
+      <img class="qual-card" src="./static/images/qual/qual_sevenscenes_00.png" alt="7-Scenes example">
+      <img class="qual-card" src="./static/images/qual/qual_sevenscenes_01.png" alt="7-Scenes example">
+      <img class="qual-card" src="./static/images/qual/qual_sevenscenes_02.png" alt="7-Scenes example">
+      <img class="qual-card" src="./static/images/qual/qual_sevenscenes_03.png" alt="7-Scenes example">
+      <img class="qual-card" src="./static/images/qual/qual_sevenscenes_04.png" alt="7-Scenes example">
+
+      <h3 class="title is-5 has-text-centered" style="margin:1.5rem 0 0.75rem;">TUM RGB-D</h3>
+      <img class="qual-card" src="./static/images/qual/qual_tum_00.png" alt="TUM example">
+      <img class="qual-card" src="./static/images/qual/qual_tum_01.png" alt="TUM example">
+      <img class="qual-card" src="./static/images/qual/qual_tum_02.png" alt="TUM example">
+      <img class="qual-card" src="./static/images/qual/qual_tum_03.png" alt="TUM example">
+      <img class="qual-card" src="./static/images/qual/qual_tum_04.png" alt="TUM example">
+
+      <p class="has-text-centered is-size-7" style="margin-top:0.5rem; color:#777;">
+        Click any card to enlarge.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Calibration and downstream payoffs</h2>
+
+    <div class="columns is-centered">
+      <div class="column is-full content">
+        <h3 class="title is-4">Calibration under domain shift</h3>
+        <p class="has-text-justified">
+          The first reliability diagrams for feed-forward geometry uncertainty. The native
+          aleatoric confidence is badly miscalibrated synthetic-to-real (ECE up to 0.42); a
+          post-hoc calibration of <i>D</i> reaches ECE about 0.02 on all three backbones.
+        </p>
+        <img src="./static/images/reliability.png" alt="Reliability diagrams"
+             style="display:block; margin:auto; max-width:100%;">
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full content">
+        <h3 class="title is-4">Error is concentrated where <i>D</i> is high</h3>
+        <p class="has-text-justified">
+          The most-uncertain 10% of the map holds about a third of the total error, three times
+          its share. A test-time refiner spending compute where <i>D</i> is high recovers most
+          of the achievable error reduction at a fraction of the cost.
+        </p>
+        <img src="./static/images/concentration.png" alt="Error concentration"
+             style="display:block; margin:auto; max-width:100%;">
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full content">
+        <h3 class="title is-4">Safety: flagging free-space hallucinations</h3>
+        <p class="has-text-justified">
+          <i>D</i> flags the hallucinated free space a robot would plan into (collision-risk
+          AUROC 0.91 versus 0.73 for the native confidence).
+        </p>
+        <img src="./static/images/collision_risk.png" alt="Collision-risk flagging"
+             style="display:block; margin:auto; max-width:100%;">
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full content">
+        <h3 class="title is-4">Trust-filtered map fusion</h3>
+        <p class="has-text-justified">
+          Dropping the least-trusted points by <i>D</i> before fusing views into a point cloud
+          cuts map error against the ground-truth cloud, more than dropping by the native
+          confidence.
+        </p>
+        <img src="./static/images/map_fusion_qual.png" alt="Trust-filtered map fusion"
+             style="display:block; margin:auto; max-width:100%;">
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full content">
+        <h3 class="title is-4">Stress test: appearance versus information</h3>
+        <p class="has-text-justified">
+          Under blur (geometry intact, appearance degraded) the native confidence collapses
+          everywhere, while <i>D</i> keeps its structure and rises inside the occluded region.
+          <i>A</i> reacts to appearance; <i>D</i> to information content.
+        </p>
+        <img src="./static/images/stress_test.png" alt="Stress test"
+             style="display:block; margin:auto; max-width:100%;">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{anonymous2026geotrust,
+  title     = {Calibrated Epistemic Uncertainty for Feed-Forward Geometry},
+  author    = {Anonymous},
+  booktitle = {Under review at WACV},
+  year      = {2026},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            This website is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>. The page template is
+            borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="lightbox" class="lightbox"><img id="lightbox-img" src="" alt="enlarged qualitative card"></div>
+
+</body>
+</html>
