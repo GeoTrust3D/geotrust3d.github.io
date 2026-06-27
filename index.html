@@ -270,6 +270,23 @@
 
     <div class="columns is-centered">
       <div class="column is-full content">
+        <h3 class="title is-4">The signal is already there in one forward</h3>
+        <p class="has-text-justified">
+          The <i>N</i> forward passes <i>D</i> costs may be unnecessary: the epistemic signal
+          is internally encoded. A single-pass linear probe on VGGT's frozen aggregator tokens
+          reaches failure-detection AUROC 0.878 once it reads block 17 (two-thirds through the
+          aggregator), above the <i>N</i>=8 disagreement <i>D</i> (0.831) and far above the
+          native confidence (0.685), leave-scene-out over 15 scenes. This is the geometry
+          analogue of semantic-entropy probes for language models, and it points to a
+          single-forward, early-exit deployment. One forward, not <i>N</i>.
+        </p>
+        <img src="./static/images/latent_probe.png" alt="Latent probe: the signal is internally encoded"
+             style="display:block; margin:auto; max-width:80%;">
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full content">
         <h3 class="title is-4">Stress test: appearance versus information</h3>
         <p class="has-text-justified">
           Under blur (geometry intact, appearance degraded) the native confidence collapses
