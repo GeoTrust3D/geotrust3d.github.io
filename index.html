@@ -110,6 +110,20 @@
 </section>
 
 
+<section class="hero teaser" id="overview">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-3 has-text-centered">Overview</h2>
+      <video controls loop playsinline
+             style="display:block; margin:auto; width:100%; border-radius:6px;">
+        <source src="./static/videos/overview.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</section>
+
+
 <section class="section" id="abstract">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
@@ -118,26 +132,23 @@
         <div class="content has-text-justified">
           <p>
             Feed-forward geometry models such as VGGT and pi3 reconstruct dense scene geometry
-            from images in a single pass and are being deployed on robots, where they fail
-            silently: they confidently predict geometry they never observed. Every uncertainty
-            signal shipped with these models, and in the methods built on them, is aleatoric
-            heteroscedastic self-report, and none is calibrated: no expected calibration error
-            (ECE), no reliability diagrams. We study the missing epistemic signal.
+            in a single pass and are being deployed on robots, where they fail silently: they
+            confidently predict geometry they never observed. Every uncertainty signal shipped
+            with these models is aleatoric heteroscedastic self-report, and none is calibrated.
+            We study the missing epistemic signal.
           </p>
           <p>
-            From a frozen backbone we read a per-pixel disagreement signal <i>D</i>, the spread
-            of the predicted surface across resampled input-view subsets, and ground it with
-            exact covisibility-support <i>S</i> from depth and pose. With three frozen backbones
-            and no learned head, <i>D</i> predicts per-pixel error and beats or matches the
-            native aleatoric confidence at failure detection across all three (AUROC up to 0.85
-            versus 0.63). We report the first ECE numbers for feed-forward geometry uncertainty:
-            the native confidence is badly miscalibrated under domain shift (ECE up to 0.42
-            synthetic-to-real), while a simple post-hoc calibration of <i>D</i> reaches ECE
-            about 0.02 on all three backbones. As an application, <i>D</i> flags the free-space
-            hallucinations a robot would plan into (collision-risk AUROC 0.91 versus 0.73), and
-            its most-uncertain 10% of the map holds about a third of the total error (three
-            times random), so test-time refinement spent where <i>D</i> is high recovers most of
-            the achievable error reduction at a fraction of the cost. Evaluation is strictly
+            From a frozen backbone, with no learned head, we read a per-pixel disagreement
+            <i>D</i>, the spread of the predicted surface across resampled input-view subsets,
+            and ground it with exact covisibility-support <i>S</i> from depth and pose. Across
+            three frozen backbones spanning pairwise and multi-view architectures, <i>D</i>
+            predicts per-pixel error and beats or matches the native aleatoric confidence at
+            failure detection, with the largest gains where that confidence is weak and on
+            wide-baseline data. We report the first calibration study for this uncertainty: the
+            native confidence is badly miscalibrated under domain shift, while a post-hoc
+            calibration of <i>D</i> is not. As an application, <i>D</i> flags the free-space
+            hallucinations a robot would plan into, and concentrates reconstruction error so
+            that test-time refinement can be spent where it is high. Evaluation is strictly
             cross-dataset on ETH3D, 7-Scenes, and TUM RGB-D.
           </p>
         </div>
